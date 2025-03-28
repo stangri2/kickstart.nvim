@@ -207,6 +207,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
+-- Setting the default tab sizes for c++ files
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'cpp', 'c', 'h', 'hpp' },
+  callback = function()
+    vim.bo.tabstop = 4 -- Number of spaces a <Tab> counts for
+    vim.bo.shiftwidth = 4 -- Number of spaces for each indentation
+    vim.bo.softtabstop = 4 -- Number of spaces a <Tab> feels like
+    vim.bo.expandtab = false -- Use actual tabs, set to true to use spaces
+  end,
+})
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -663,7 +673,7 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {},
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
