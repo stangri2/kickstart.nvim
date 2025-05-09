@@ -209,7 +209,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 -- Setting the default tab sizes for c++ files
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'cpp', 'c', 'h', 'hpp' },
+  pattern = { 'cpp', 'c', 'h', 'hpp', 'cu', 'cuh' },
   callback = function()
     vim.bo.tabstop = 4 -- Number of spaces a <Tab> counts for
     vim.bo.shiftwidth = 4 -- Number of spaces for each indentation
@@ -439,6 +439,8 @@ require('lazy').setup({
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
+      local utils = require 'user.utils'
+
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
@@ -449,6 +451,14 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+
+      vim.keymap.set('n', '<leader>spf', function()
+        builtin.find_files { cwd = utils.get_git_root() }
+      end, { desc = '[S]earch [P]roject [F]iles' })
+
+      vim.keymap.set('n', '<leader>spg', function()
+        builtin.live_grep { cwd = utils.get_git_root() }
+      end, { desc = 'S]earch [P]roject by [G]rep' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
